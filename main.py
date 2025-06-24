@@ -51,6 +51,7 @@ def handle_move(call):
     user_id = call.message.chat.id
 
     if call.data == 'restart':
+        bot.edit_message_reply_markup(user_id, call.message.message_id, reply_markup=None)
         start_game(call.message)
         return
 
@@ -58,13 +59,13 @@ def handle_move(call):
         bot.answer_callback_query(call.id, "Ця клітинка вже зайнята")
         return
 
-    pos = int(call.data)
-
     if user_id not in games:
         bot.answer_callback_query(call.id, "Гру не знайдено. Натисни /start")
         return
 
+    pos = int(call.data)
     board = games[user_id]
+
     if board[pos] != ' ':
         bot.answer_callback_query(call.id, "Ця клітинка вже зайнята")
         return
